@@ -1,5 +1,7 @@
 # 🎫 Support Nexus — Support Ticket Dashboard
-Deployment : ticketscanner-hf5dt5qnc-bedarshis-projects.vercel.app
+🌐 TICKETSCANNER — LIVE ON VERCEL
+✨ Production URL:
+https://ticketscanner-hf5dt5qnc-bedarshis-projects.vercel.app/
 image of the website
 <img width="1917" height="1000" alt="image" src="https://github.com/user-attachments/assets/caf47834-c7b5-4c9c-a028-d9bc421d07c5" />
 <img width="1815" height="907" alt="image" src="https://github.com/user-attachments/assets/4c5cab84-8dce-493a-afb9-d672a64968a6" />
