@@ -1,69 +1,329 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Search,
+  Ticket as TicketIcon,
+  CircleDot,
+  Clock3,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
+
+import { RootState, AppDispatch } from "@/store/store";
+import {
+  setSearch,
+  setStatusFilter,
+} from "@/store/ticketsSlice";
+
+import StatCard from "@/components/StatCard";
+import TicketFilters from "@/components/TicketFilters";
+import TicketTable from "@/components/TicketTable";
+import TicketDetails from "@/components/TicketDetails";
+
+import { Ticket } from "@/types/ticket";
+
+export default function HomePage() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { tickets, search, statusFilter } = useSelector(
+    (state: RootState) => state.tickets
+  );
+
+  const [selectedTicket, setSelectedTicket] =
+    useState<Ticket | null>(null);
+
+  /*
+   * Dashboard statistics
+   */
+  const totalTickets = tickets.length;
+
+  const openTickets = tickets.filter(
+    (ticket) => ticket.status === "Open"
+  ).length;
+
+  const inProgressTickets = tickets.filter(
+    (ticket) => ticket.status === "In Progress"
+  ).length;
+
+  const resolvedTickets = tickets.filter(
+    (ticket) => ticket.status === "Resolved"
+  ).length;
+
+  /*
+   * Search result count
+   */
+  const filteredTicketCount = useMemo(() => {
+    return tickets.filter((ticket) => {
+      const query = search.toLowerCase().trim();
+
+      const matchesSearch =
+        query === "" ||
+        ticket.id.toLowerCase().includes(query) ||
+        ticket.title.toLowerCase().includes(query) ||
+        ticket.customer.toLowerCase().includes(query) ||
+        ticket.email.toLowerCase().includes(query) ||
+        ticket.category.toLowerCase().includes(query);
+
+      const matchesStatus =
+        statusFilter === "All" ||
+        ticket.status === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    }).length;
+  }, [tickets, search, statusFilter]);
+
+  /*
+   * Select ticket from table
+   */
+  const handleSelectTicket = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+  };
+
+  /*
+   * Close ticket details
+   */
+  const handleCloseDetails = () => {
+    setSelectedTicket(null);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-transparent px-4 py-8 text-white md:px-8 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+
+        {/* ========================================= */}
+        {/* PAGE HEADER */}
+        {/* ========================================= */}
+
+        <div className="mb-8">
+          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+
+            <div>
+              <p className="mb-2 text-sm font-medium uppercase tracking-[0.25em] text-cyan-400">
+                Support Nexus
+              </p>
+
+              <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+                Support Ticket Dashboard
+              </h1>
+
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
+                Monitor, search, manage, and resolve customer support
+                tickets from one centralized workspace.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-4 py-3">
+              <p className="text-xs uppercase tracking-wider text-slate-500">
+                System Status
+              </p>
+
+              <div className="mt-1 flex items-center gap-2">
+                <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-400" />
+
+                <span className="text-sm font-medium text-emerald-400">
+                  Operational
+                </span>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+
+        {/* ========================================= */}
+        {/* STAT CARDS */}
+        {/* ========================================= */}
+
+        <section className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+
+          <StatCard
+            title="Total Tickets"
+            value={totalTickets}
+            description="All support tickets"
+            icon={TicketIcon}
+          />
+
+          <StatCard
+            title="Open"
+            value={openTickets}
+            description="Waiting for support"
+            icon={CircleDot}
+          />
+
+          <StatCard
+            title="In Progress"
+            value={inProgressTickets}
+            description="Currently being handled"
+            icon={Clock3}
+          />
+
+          <StatCard
+            title="Resolved"
+            value={resolvedTickets}
+            description="Successfully resolved"
+            icon={CheckCircle2}
+          />
+
+        </section>
+
+
+        {/* ========================================= */}
+        {/* SEARCH */}
+        {/* ========================================= */}
+
+        <section className="mb-6 rounded-2xl border border-slate-800 bg-slate-950/60 p-4 shadow-xl md:p-5">
+
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+
+            <div className="relative w-full lg:max-w-xl">
+
+              <Search
+                size={19}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
+              />
+
+              <input
+                type="text"
+                value={search}
+                onChange={(event) =>
+                  dispatch(setSearch(event.target.value))
+                }
+                placeholder="Search by ticket ID, title, customer, email..."
+                className="w-full rounded-xl border border-slate-700 bg-slate-900/80 py-3 pl-11 pr-4 text-sm text-white outline-none placeholder:text-slate-600 transition focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30"
+              />
+
+            </div>
+
+            <div className="text-sm text-slate-500">
+              Showing{" "}
+              <span className="font-semibold text-slate-300">
+                {filteredTicketCount}
+              </span>{" "}
+              tickets
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* ========================================= */}
+        {/* STATUS FILTERS */}
+        {/* ========================================= */}
+
+        <section className="mb-6">
+
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+              Ticket Status
+            </h2>
+          </div>
+
+          <TicketFilters />
+
+        </section>
+
+
+        {/* ========================================= */}
+        {/* TICKET TABLE */}
+        {/* ========================================= */}
+
+        <section className="mb-8">
+
+          <div className="mb-4 flex items-center justify-between">
+
+            <div>
+              <h2 className="text-xl font-bold text-white">
+                Tickets
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500">
+                Manage customer support requests.
+              </p>
+            </div>
+
+          </div>
+
+          <TicketTable />
+
+        </section>
+
+
+        {/* ========================================= */}
+        {/* QUICK INFO */}
+        {/* ========================================= */}
+
+        <section className="grid gap-4 md:grid-cols-3">
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400">
+              <TicketIcon size={20} />
+            </div>
+
+            <h3 className="font-semibold text-white">
+              Centralized Tickets
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              Keep customer support requests organized in one place.
+            </p>
+          </div>
+
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400">
+              <Clock3 size={20} />
+            </div>
+
+            <h3 className="font-semibold text-white">
+              Real-time Management
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              Change ticket status and priority directly from the dashboard.
+            </p>
+          </div>
+
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400">
+              <CheckCircle2 size={20} />
+            </div>
+
+            <h3 className="font-semibold text-white">
+              Resolution Tracking
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              Track open, active, resolved, and closed support requests.
+            </p>
+          </div>
+
+        </section>
+
+
+        {/* ========================================= */}
+        {/* TICKET DETAILS */}
+        {/* ========================================= */}
+
+        {selectedTicket && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+
+            <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto">
+
+              <TicketDetails
+                ticket={selectedTicket}
+                onClose={handleCloseDetails}
+              />
+
+            </div>
+
+          </div>
+        )}
+
+      </div>
+    </main>
   );
 }
