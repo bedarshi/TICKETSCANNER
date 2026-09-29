@@ -24,7 +24,7 @@ Support Nexus provides a centralized workspace for monitoring, searching, filter
 
 > Dashboard preview:
 
-![Support Nexus Dashboard](./public/dashboard-preview.png)
+
 
 > If the screenshot is stored somewhere else, place the dashboard screenshot at:
 >
