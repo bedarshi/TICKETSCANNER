@@ -2,11 +2,14 @@
 🌐 TICKETSCANNER — LIVE ON VERCEL
 ✨ Production URL:
 https://ticketscanner-hf5dt5qnc-bedarshis-projects.vercel.app/
+
+-----------------------------------------------------------------------------------------------------------------------------------
 image of the website
 <img width="1917" height="1000" alt="image" src="https://github.com/user-attachments/assets/caf47834-c7b5-4c9c-a028-d9bc421d07c5" />
 <img width="1815" height="907" alt="image" src="https://github.com/user-attachments/assets/4c5cab84-8dce-493a-afb9-d672a64968a6" />
 <img width="1782" height="892" alt="image" src="https://github.com/user-attachments/assets/7c60ea66-063f-481d-b2c8-612f0bef25b3" />
 <img width="1917" height="1157" alt="image" src="https://github.com/user-attachments/assets/14d62d61-c64e-4206-a70b-8655608df300" />
+------------------------------------------------------------------------------------------------------------------------------------
 
 gmail : bedarshi9@gmail.com
 contact : 8822763336
