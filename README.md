@@ -16,7 +16,9 @@ contact : 8822763336
 
 A modern, responsive support ticket management dashboard built with **Next.js, TypeScript, React, Redux Toolkit, Tailwind CSS, and JSON Server**.
 
-Support Nexus provides a centralized workspace for monitoring, searching, filtering, and managing customer support tickets through a clean, professional dashboard interface.
+API TESTING IMAGE
+<img width="1726" height="927" alt="image" src="https://github.com/user-attachments/assets/112a8a13-afd9-4861-a199-c7cfb5587c2a" />
+
 
 ---
 
