@@ -18,6 +18,7 @@ A modern, responsive support ticket management dashboard built with **Next.js, T
 
 API TESTING IMAGE
 
+<img width="1886" height="1127" alt="image" src="https://github.com/user-attachments/assets/1160539e-ca51-4e14-a16f-65de542612bb" />
 
 
 ---
